@@ -34,58 +34,62 @@ namespace BCDD
         [STAThread]
         static void Main(string[] args)
         {
-            foreach (String filename in Program.getFiles(args))
+            List<String> files = Program.getFiles(args);
+            if (files.Count > 0)
             {
-                try
+                foreach (String filename in files)
                 {
-                    Console.WriteLine("Analyzing " + filename);
-                    PBNFile file = new PBNFile(filename);
-                    foreach (PBNBoard board in file.Boards)
+                    try
                     {
-                        DDTable table = new DDTable(board);
-                        String boardNo;
-                        try
+                        Console.WriteLine("Analyzing " + filename);
+                        PBNFile file = new PBNFile(filename);
+                        foreach (PBNBoard board in file.Boards)
                         {
-                            boardNo = board.GetNumber();
-                        }
-                        catch (FieldNotFoundException)
-                        {
-                            boardNo = "?";
-                        }
-                        try
-                        {
-                            int[,] ddTable = table.GetDDTable();
-                            if (ddTable != null)
+                            DDTable table = new DDTable(board);
+                            String boardNo;
+                            try
                             {
-                                Console.WriteLine("Board " + boardNo);
-                                DDTable.PrintTable(ddTable);
-                                ParScore par = new ParScore(board);
-                                ParContract contract = par.GetParContract(ddTable);
-                                Console.WriteLine(contract);
-                                Console.WriteLine();
-                                board.SaveDDTable(ddTable);
-                                board.SaveParContract(contract);
-                                file.WriteBoard(board);
+                                boardNo = board.GetNumber();
                             }
-                            else
+                            catch (FieldNotFoundException)
                             {
-                                Console.WriteLine("ERROR: unable to determine DD table for board " + boardNo);
+                                boardNo = "?";
+                            }
+                            try
+                            {
+                                int[,] ddTable = table.GetDDTable();
+                                if (ddTable != null)
+                                {
+                                    Console.WriteLine("Board " + boardNo);
+                                    DDTable.PrintTable(ddTable);
+                                    ParScore par = new ParScore(board);
+                                    ParContract contract = par.GetParContract(ddTable);
+                                    Console.WriteLine(contract);
+                                    Console.WriteLine();
+                                    board.SaveDDTable(ddTable);
+                                    board.SaveParContract(contract);
+                                    file.WriteBoard(board);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("ERROR: unable to determine DD table for board " + boardNo);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
                             }
                         }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
+                        file.Save();
                     }
-                    file.Save();
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("ERROR: " + e.Message);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("ERROR: " + e.Message);
-                }
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadLine();
             }
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadLine();
         }
     }
 }

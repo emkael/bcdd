@@ -75,6 +75,102 @@ namespace BCDD
             return contract.Validate();
         }
 
+        private bool determineVulnerability(String vulnerability, char declarer)
+        {
+            vulnerability = vulnerability.ToUpper();
+            return "ALL".Equals(vulnerability) || "BOTH".Equals(vulnerability)
+                || (!"LOVE".Equals(vulnerability) && !"NONE".Equals(vulnerability) && vulnerability.Contains(declarer));
+        }
+
+        private ParContract getHighestMakeableContract(int[,] ddTable, bool forNS = true, bool forEW = true)
+        {
+            ParContract contract = new ParContract();
+            int tricks = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if ((i % 2 == 0 && forNS)
+                    || (i % 2 == 1 && forEW))
+                {
+                    for (int j = 0; j < 5; j++)
+                    {
+                        int level = ddTable[i, j] - 6;
+                        if (level >= contract.Level)
+                        {
+                            contract.Level = level;
+                            contract.Denomination = BCalcWrapper.DENOMINATIONS[j];
+                            contract.Declarer = BCalcWrapper.PLAYERS[i];
+                            tricks = ddTable[i, j];
+                        }
+                    }
+                }
+            }
+            String vulnerability = this.board.GetVulnerable().ToUpper();
+            bool vulnerable = this.determineVulnerability(vulnerability, contract.Declarer);
+            contract.Score = contract.CalculateScore(tricks, vulnerable);
+            return contract;
+        }
+
+        public ParContract GetDDTableParContract(int[,] ddTable)
+        {
+            String dealer = this.board.GetDealer();
+            String vulnerability = this.board.GetVulnerable().ToUpper();
+            ParContract nsHighest = this.getHighestMakeableContract(ddTable, true, false);
+            ParContract ewHighest = this.getHighestMakeableContract(ddTable, false, true);
+            bool nsPlaying = ("N".Equals(dealer) || "S".Equals(dealer));
+            if (nsHighest == ewHighest)
+            {
+                return nsPlaying ? nsHighest.Validate() : ewHighest.Validate();
+            }
+            bool defenseVulnerability = this.determineVulnerability(vulnerability, nsPlaying ? 'E' : 'N');
+            ParContract highest = nsHighest.Higher(ewHighest) ? nsHighest : ewHighest;
+            ParContract highestDefense = highest.GetDefense(ddTable, defenseVulnerability);
+            if (highestDefense != null)
+            {
+                return highestDefense.Validate();
+            }
+            int denominationIndex = Array.IndexOf(BCalcWrapper.DENOMINATIONS, highest.Denomination);
+            int declarerIndex = Array.IndexOf(BCalcWrapper.PLAYERS, highest.Declarer);
+            List<int> playerIndexes = new List<int>();
+            playerIndexes.Add(declarerIndex);
+            playerIndexes.Add((declarerIndex + 2) & 3);
+            bool vulnerable = this.determineVulnerability(vulnerability, highest.Declarer);
+            int scoreSquared = highest.Score * highest.Score;
+            List<ParContract> possibleOptimums = new List<ParContract>();
+            for (int i = 0; i < 5; i++)
+            {
+                foreach (int player in playerIndexes)
+                {
+                    int level = highest.Level;
+                    if (i > denominationIndex)
+                    {
+                        level--;
+                    }
+                    while (level > 0)
+                    {
+                        ParContract contract = new ParContract(level, BCalcWrapper.DENOMINATIONS[i], BCalcWrapper.PLAYERS[player], false, 0);
+                        contract.Score = contract.CalculateScore(ddTable[player, i], vulnerable);
+                        if (scoreSquared < contract.Score * highest.Score)
+                        {
+                            possibleOptimums.Add(contract.GetDefense(ddTable, defenseVulnerability) ?? contract);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                        level--;
+                    }
+                }
+            }
+            foreach (ParContract contract in possibleOptimums)
+            {
+                if (Math.Abs(contract.Score) > Math.Abs(highest.Score) || (contract.Score == highest.Score && contract.Higher(highest)))
+                {
+                    highest = contract;
+                }
+            }
+            return highest.Validate();
+        }
+
         public ParContract GetParContract(int[,] ddTable)
         {
             try
@@ -83,7 +179,14 @@ namespace BCDD
             }
             catch (FieldNotFoundException)
             {
-                return this.GetPBNParContract();
+                try
+                {
+                    return this.GetPBNParContract();
+                }
+                catch (FieldNotFoundException)
+                {
+                    return this.GetDDTableParContract(ddTable);
+                }
             }
         }
 

@@ -164,5 +164,60 @@ namespace BCDD
             return score;
         }
 
+        public bool Higher(ParContract obj)
+        {
+            return (this.Level > obj.Level
+                || (this.Level == obj.Level
+                && Array.IndexOf(BCalcWrapper.DENOMINATIONS, this.Denomination) > Array.IndexOf(BCalcWrapper.DENOMINATIONS, obj.Denomination)));
+        }
+
+        public ParContract GetDefense(int[,] ddTable, bool vulnerable)
+        {
+            if (this.Level != 0)
+            {
+                int declarerIndex = Array.IndexOf(BCalcWrapper.PLAYERS, this.Declarer);
+                List<int> defendersIndexes = new List<int>();
+                defendersIndexes.Add((declarerIndex + 1) & 3);
+                defendersIndexes.Add((declarerIndex + 3) & 3);
+                List<ParContract> possibleDefense = new List<ParContract>();
+                int scoreSquared = this.Score * this.Score;
+                int denominationIndex = Array.IndexOf(BCalcWrapper.DENOMINATIONS, this.Denomination);
+                for (int i = 0; i < 5; i++)
+                {
+                    int level = this.Level;
+                    if (i <= denominationIndex)
+                    {
+                        level++;
+                    }
+                    foreach (int defender in defendersIndexes)
+                    {
+                        if (level + 6 > ddTable[defender, i])
+                        {
+                            ParContract defense = new ParContract(level, BCalcWrapper.DENOMINATIONS[i], BCalcWrapper.PLAYERS[defender], true, 0);
+                            defense.Score = defense.CalculateScore(ddTable[defender, i], vulnerable);
+                            if (scoreSquared > this.Score * defense.Score)
+                            {
+                                possibleDefense.Add(defense);
+                            }
+                        }
+                    }
+                }
+                if (possibleDefense.Count > 0)
+                {
+                    possibleDefense.Sort((x, y) => Math.Abs(x.Score - this.Score).CompareTo(Math.Abs(y.Score - this.Score)));
+                    ParContract optimumDefense = possibleDefense.Last();
+                    possibleDefense = possibleDefense.FindAll(x => x.Score == optimumDefense.Score);
+                    foreach (ParContract defense in possibleDefense)
+                    {
+                        if (defense.Higher(optimumDefense))
+                        {
+                            optimumDefense = defense;
+                        }
+                    }
+                    return optimumDefense;
+                }
+            }
+            return null;
+        }
     }
 }

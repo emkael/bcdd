@@ -11,7 +11,7 @@ namespace BCDD
         public static char[] DENOMINATIONS = { 'C', 'D', 'H', 'S', 'N' };
         public static char[] PLAYERS = { 'N', 'E', 'S', 'W' };
 
-        /// <remarks>http://bcalc.w8.pl/API_C/bcalcdds_8h.html#ab636045f65412652246b769e8e95ed6f</remarks>
+        /// <remarks>http://bcalc.w8.pl/API_C/bcalcdds_8h.html#a8f522e85482fe383bebd963e873897f5</remarks>
         [DllImport(@"libbcalcdds.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr bcalcDDS_new(IntPtr format, IntPtr hands, Int32 trump, Int32 leader);
 
@@ -19,7 +19,7 @@ namespace BCDD
         [DllImport(@"libbcalcdds.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern Int32 bcalcDDS_getTricksToTake(IntPtr solver);
 
-        /// <remarks>http://bcalc.w8.pl/API_C/bcalcdds_8h.html#a89cdec200cde91331d40f0900dc0fb46</remarks>
+        /// <remarks>http://bcalc.w8.pl/API_C/bcalcdds_8h.html#a8998a1eb1ca25de2e07448381ce63261</remarks>
         [DllImport(@"libbcalcdds.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr bcalcDDS_getLastError(IntPtr solver);
 

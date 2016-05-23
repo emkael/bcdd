@@ -69,5 +69,100 @@ namespace BCDD
             return this.Score + this.Level + 10000 * this.Denomination;
         }
 
+        public int CalculateScore(int tricks, bool vulnerable = false)
+        {
+            if (this.Level == 0)
+            {
+                return 0;
+            }
+            int score = 0;
+            if (this.Level + 6 > tricks)
+            {
+                int undertricks = this.Level + 6 - tricks;
+                if (this.Doubled)
+                {
+                    do
+                    {
+                        if (undertricks == 1) // first undertrick: 100 non-vul, 200 vul
+                        {
+                            score -= vulnerable ? 200 : 100;
+                        }
+                        else
+                        {
+                            if (undertricks <= 3 && !vulnerable) // second non-vul undertrick: 200
+                            {
+                                score -= 200;
+                            }
+                            else // further undertricks: 300
+                            {
+                                score -= 300;
+                            }
+                        }
+                        undertricks--;
+                    }
+                    while (undertricks > 0);
+                }
+                else
+                {
+                    score = vulnerable ? -100 : -50;
+                    score *= undertricks;
+                }
+            }
+            else
+            {
+                int parTricks = this.Level;
+                do
+                {
+                    if (this.Denomination == 'N' && parTricks == 1) // first non-trump trick: 40
+                    {
+                        score += 40;
+                    }
+                    else // other tricks
+                    {
+                        switch (this.Denomination)
+                        {
+                            case 'N':
+                            case 'S':
+                            case 'H':
+                                score += 30;
+                                break;
+                            case 'D':
+                            case 'C':
+                                score += 20;
+                                break;
+                        }
+                    }
+                    parTricks--;
+                }
+                while (parTricks > 0);
+                if (this.Doubled)
+                {
+                    score *= 2;
+                }
+                score += (score >= 100) ? (vulnerable ? 500 : 300) : 50; // game premium
+                if (this.Level == 7) // grand slam premium
+                {
+                    score += vulnerable ? 1500 : 1000;
+                }
+                else if (this.Level == 6) // small slam premium
+                {
+                    score += vulnerable ? 750 : 500;
+                }
+                if (this.Doubled)
+                {
+                    score += 50;
+                }
+                int overtricks = tricks - this.Level - 6;
+                score += this.Doubled
+                    ? (vulnerable ? 200 : 100) * overtricks // (re-)double overtricks: 100/200/200/400
+                    : overtricks * ((this.Denomination == 'C' || this.Denomination == 'D') ? 20 : 30); // undoubled overtricks
+            }
+            if (this.Declarer == 'E' || this.Declarer == 'W')
+            {
+                score = -score;
+            }
+            return score;
+        }
+
     }
 }

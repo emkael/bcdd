@@ -12,7 +12,7 @@ namespace BCDD
         public String RawField;
 
         public PBNField() { }
-        
+
         public PBNField(String key, String value)
         {
             this.Key = key;
@@ -274,7 +274,8 @@ namespace BCDD
         {
             bool fieldFound = false;
             List<PBNField> toRemove = new List<PBNField>();
-            foreach (PBNField field in this.Fields) {
+            foreach (PBNField field in this.Fields)
+            {
                 if ("OptimumResultTable".Equals(field.Key))
                 {
                     fieldFound = true;

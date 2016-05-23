@@ -62,8 +62,14 @@ namespace BCDD
                 {
                     BCalcWrapper.bcalcDDS_setPlayerOnLeadAndReset(solver, BCalcWrapper.bcalc_declarerToLeader(player));
                     result[player, denom] = 13 - BCalcWrapper.bcalcDDS_getTricksToTake(solver);
+                    String error = Marshal.PtrToStringAuto(BCalcWrapper.bcalcDDS_getLastError(solver));
+                    if (error != null)
+                    {
+                        throw new DDTableInvalidException("BCalc error: " + error);
+                    }
                 }
             }
+            BCalcWrapper.bcalcDDS_delete(solver);
             return this.validateTable(result);
         }
 

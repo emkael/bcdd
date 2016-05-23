@@ -32,14 +32,11 @@ namespace BCDD
 
         private int[,] validateTable(int[,] table)
         {
-            for (int i = 0; i < 4; i++)
+            foreach (int t in table)
             {
-                for (int j = 0; j < 5; j++)
+                if (t > 13 || t < 0)
                 {
-                    if (table[i, j] > 13 || table[i, j] < 0)
-                    {
-                        throw new DDTableInvalidException("Invalid number of tricks: " + table[i, j].ToString());
-                    }
+                    throw new DDTableInvalidException("Invalid number of tricks: " + t.ToString());
                 }
             }
             return table;

@@ -22,6 +22,7 @@ namespace BCDD
             {
                 OpenFileDialog fd = new OpenFileDialog();
                 fd.Multiselect = true;
+                fd.Filter = "PBN files (*.pbn)|*.pbn|All files (*.*)|*.*";
                 if (fd.ShowDialog() == DialogResult.OK)
                 {
                     filenames = new List<String>(fd.FileNames);

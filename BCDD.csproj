@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="BCalcWrapper.cs" />
     <Compile Include="DDTable.cs" />
+    <Compile Include="ParContract.cs" />
+    <Compile Include="ParScore.cs" />
     <Compile Include="PBNBoard.cs" />
     <Compile Include="PBNFile.cs" />
     <Compile Include="Program.cs" />

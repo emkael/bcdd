@@ -36,6 +36,9 @@ namespace BCDD
     {
         public List<PBNField> Fields;
 
+        private bool? hasOptimumResultTable = null;
+        private bool? hasAbility = null;
+
         public PBNBoard(List<string> lines)
         {
             this.Fields = new List<PBNField>();
@@ -112,6 +115,155 @@ namespace BCDD
         public String GetDealer()
         {
             return this.GetField("Dealer");
+        }
+
+        public MatchCollection ValidateAbility(String ability)
+        {
+            Regex abilityMatch = new Regex(@"\b([NESW]):([0-9A-D]{5})\b");
+            MatchCollection matches = abilityMatch.Matches(ability);
+            if (matches.Count != 4)
+            {
+                this.hasAbility = false;
+                throw new DDTableInvalidException("Invalid Ability line: " + ability);
+            }
+            List<String> players = new List<String>();
+            foreach (Match match in matches)
+            {
+                if (players.Contains(match.Groups[1].Value))
+                {
+                    this.hasAbility = false;
+                    throw new DDTableInvalidException("Duplicate entry in Ability: " + match.Groups[0].Value);
+                }
+                else
+                {
+                    players.Add(match.Groups[1].Value);
+                }
+            }
+            this.hasAbility = true;
+            return matches;
+        }
+
+        public String GetAbility()
+        {
+            return this.GetField("Ability");
+        }
+
+        public void DeleteAbility()
+        {
+            this.DeleteField("Ability");
+        }
+
+        public void WriteAbility(int[,] ddTable)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 4; i++)
+            {
+                sb.Append(BCalcWrapper.PLAYERS[i]);
+                sb.Append(':');
+                for (int j = 4; j >= 0; j--)
+                {
+                    sb.Append((char)(ddTable[i, j] > 9 ? 'A' + ddTable[i, j] - 10 : ddTable[i, j] + '0'));
+                }
+                if (i < 3)
+                {
+                    sb.Append(' ');
+                }
+            }
+            String abilityStr = sb.ToString();
+            this.Fields.Add(new PBNField("Ability", abilityStr));
+        }
+
+        public List<Match> ValidateOptimumResultTable(List<String> table)
+        {
+            Regex linePattern = new Regex(@"^([NESW])\s+([CDHSN])T?\s+(\d+)$");
+            List<Match> matches = new List<Match>();
+            List<String> duplicates = new List<String>();
+            foreach (String line in table)
+            {
+                Match match = linePattern.Match(line);
+                if (!match.Success)
+                {
+                    this.hasOptimumResultTable = false;
+                    throw new DDTableInvalidException("Invalid OptimumResultTable line: " + line);
+                }
+                String position = match.Groups[1].Value + " - " + match.Groups[2].Value;
+                if (duplicates.Contains(position))
+                {
+                    this.hasOptimumResultTable = false;
+                    throw new DDTableInvalidException("Duplicate OptimumResultTable line: " + line);
+                }
+                else
+                {
+                    duplicates.Add(position);
+                }
+                matches.Add(match);
+            }
+            this.hasOptimumResultTable = true;
+            return matches;
+        }
+
+        public List<String> GetOptimumResultTable()
+        {
+            bool fieldFound = false;
+            List<String> result = new List<String>();
+            foreach (PBNField field in this.Fields)
+            {
+                if ("OptimumResultTable".Equals(field.Key))
+                {
+                    fieldFound = true;
+                }
+                else
+                {
+                    if (fieldFound)
+                    {
+                        if (field.Key == null)
+                        {
+                            result.Add(field.RawField);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!fieldFound)
+            {
+                this.hasOptimumResultTable = false;
+                throw new FieldNotFoundException("OptimumResultTable field not found");
+            }
+            return result;
+        }
+
+        public void DeleteOptimumResultTable()
+        {
+            bool fieldFound = false;
+            List<PBNField> toRemove = new List<PBNField>();
+            foreach (PBNField field in this.Fields) {
+                if ("OptimumResultTable".Equals(field.Key))
+                {
+                    fieldFound = true;
+                    toRemove.Add(field);
+                }
+                else
+                {
+                    if (fieldFound)
+                    {
+                        if (field.Key == null)
+                        {
+                            toRemove.Add(field);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            foreach (PBNField remove in toRemove)
+            {
+                this.Fields.Remove(remove);
+            }
         }
 
     }

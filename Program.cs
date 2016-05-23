@@ -18,6 +18,37 @@ namespace BCDD
                 {
                     Console.WriteLine("Analyzing " + filename);
                     PBNFile file = new PBNFile(filename);
+                    foreach (PBNBoard board in file.Boards)
+                    {
+                        DDTable table = new DDTable(board);
+                        String boardNo;
+                        try
+                        {
+                            boardNo = board.GetNumber();
+                        }
+                        catch (FieldNotFoundException)
+                        {
+                            boardNo = "?";
+                        }
+                        try
+                        {
+                            int[,] ddTable = table.GetDDTable();
+                            if (ddTable != null)
+                            {
+                                Console.WriteLine("Board " + boardNo);
+                                DDTable.PrintTable(ddTable);
+                            }
+                            else
+                            {
+                                Console.WriteLine("ERROR: unable to determine DD table for board " + boardNo);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.WriteLine(e.StackTrace);
+                        }
+                    }
                 }
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadLine();

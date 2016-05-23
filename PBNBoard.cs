@@ -39,15 +39,18 @@ namespace BCDD
         private bool? hasOptimumResultTable = null;
         private bool? hasAbility = null;
 
+        private static Regex linePattern = new Regex(@"\[(.*) ""(.*)""\]");
+        private static Regex abilityPattern = new Regex(@"\b([NESW]):([0-9A-D]{5})\b");
+        private static Regex optimumResultTablePattern = new Regex(@"^([NESW])\s+([CDHSN])T?\s+(\d+)$");
+
         public PBNBoard(List<string> lines)
         {
             this.Fields = new List<PBNField>();
-            Regex linePattern = new Regex(@"\[(.*) ""(.*)""\]");
             foreach (String line in lines)
             {
                 PBNField field = new PBNField();
                 field.RawField = line;
-                Match lineParse = linePattern.Match(line);
+                Match lineParse = PBNBoard.linePattern.Match(line);
                 if (lineParse.Success)
                 {
                     field.Key = lineParse.Groups[1].Value;
@@ -119,8 +122,7 @@ namespace BCDD
 
         public MatchCollection ValidateAbility(String ability)
         {
-            Regex abilityMatch = new Regex(@"\b([NESW]):([0-9A-D]{5})\b");
-            MatchCollection matches = abilityMatch.Matches(ability);
+            MatchCollection matches = PBNBoard.abilityPattern.Matches(ability);
             if (matches.Count != 4)
             {
                 this.hasAbility = false;
@@ -210,12 +212,11 @@ namespace BCDD
 
         public List<Match> ValidateOptimumResultTable(List<String> table)
         {
-            Regex linePattern = new Regex(@"^([NESW])\s+([CDHSN])T?\s+(\d+)$");
             List<Match> matches = new List<Match>();
             List<String> duplicates = new List<String>();
             foreach (String line in table)
             {
-                Match match = linePattern.Match(line);
+                Match match = PBNBoard.optimumResultTablePattern.Match(line);
                 if (!match.Success)
                 {
                     this.hasOptimumResultTable = false;

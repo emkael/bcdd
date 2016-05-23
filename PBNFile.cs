@@ -58,6 +58,10 @@ namespace BCDD
 
         public void Save()
         {
+            if (this.outputFile == null)
+            {
+                throw new IOException("No boards written to PBN file, unable to save it.");
+            }
             this.outputFile.Flush();
             this.outputFile.Close();
             File.Delete(this.filename);

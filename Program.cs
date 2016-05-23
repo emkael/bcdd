@@ -37,6 +37,9 @@ namespace BCDD
                             {
                                 Console.WriteLine("Board " + boardNo);
                                 DDTable.PrintTable(ddTable);
+                                Console.WriteLine();
+                                board.SaveDDTable(ddTable);
+                                file.WriteBoard(board);
                             }
                             else
                             {
@@ -49,6 +52,7 @@ namespace BCDD
                             Console.WriteLine(e.StackTrace);
                         }
                     }
+                    file.Save();
                 }
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadLine();

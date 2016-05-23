@@ -266,5 +266,54 @@ namespace BCDD
             }
         }
 
+        public void WriteOptimumResultTable(int[,] ddTable)
+        {
+            this.Fields.Add(new PBNField("OptimumResultTable", @"Declarer;Denomination\2R;Result\2R"));
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    this.Fields.Add(new PBNField(String.Format("{0} {1}{2} {3}", BCalcWrapper.PLAYERS[i], BCalcWrapper.DENOMINATIONS[j], (BCalcWrapper.DENOMINATIONS[j] == 'N') ? "T" : "", ddTable[i, j])));
+                }
+            }
+        }
+
+        public void SaveDDTable(int[,] ddTable)
+        {
+            if (this.hasOptimumResultTable == null)
+            {
+                try
+                {
+                    List<Match> optimumResultTable = this.ValidateOptimumResultTable(this.GetOptimumResultTable());
+                    this.hasOptimumResultTable = true;
+                }
+                catch (FieldNotFoundException)
+                {
+                    this.hasOptimumResultTable = false;
+                }
+            }
+            if (this.hasOptimumResultTable == false)
+            {
+                this.DeleteOptimumResultTable();
+                this.WriteOptimumResultTable(ddTable);
+            }
+            if (this.hasAbility == null)
+            {
+                try
+                {
+                    MatchCollection ability = this.ValidateAbility(this.GetAbility());
+                    this.hasAbility = true;
+                }
+                catch (FieldNotFoundException)
+                {
+                    this.hasAbility = false;
+                }
+            }
+            if (this.hasAbility == false)
+            {
+                this.DeleteAbility();
+                this.WriteAbility(ddTable);
+            }
+        }
     }
 }

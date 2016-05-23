@@ -94,5 +94,25 @@ namespace BCDD
             }
         }
 
+        public String GetLayout()
+        {
+            return this.GetField("Deal");
+        }
+
+        public String GetNumber()
+        {
+            return this.GetField("Board");
+        }
+
+        public String GetVulnerable()
+        {
+            return this.GetField("Vulnerable");
+        }
+
+        public String GetDealer()
+        {
+            return this.GetField("Dealer");
+        }
+
     }
 }

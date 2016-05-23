@@ -173,6 +173,41 @@ namespace BCDD
             this.Fields.Add(new PBNField("Ability", abilityStr));
         }
 
+        public String GetMinimax()
+        {
+            return this.GetField("Minimax");
+        }
+
+        public void DeleteMinimax()
+        {
+            this.DeleteField("Minimax");
+        }
+
+        public void WriteMinimax(ParContract contract)
+        {
+            this.Fields.Add(new PBNField("Minimax", String.Format("{0}{1}{2}{3}{4}", contract.Level, contract.Denomination, contract.Doubled ? "D" : "", contract.Declarer, contract.Score)));
+        }
+
+        public String GetOptimumScore()
+        {
+            return this.GetField("OptimumScore");
+        }
+
+        public void DeleteOptimumScore()
+        {
+            this.DeleteField("OptimumScore");
+        }
+
+        public void WriteOptimumScore(ParContract contract)
+        {
+            this.Fields.Add(new PBNField("OptimumScore", String.Format("NS {0}", contract.Score)));
+        }
+
+        public String GetOptimumResult()
+        {
+            return this.GetField("OptimumResult");
+        }
+
         public List<Match> ValidateOptimumResultTable(List<String> table)
         {
             Regex linePattern = new Regex(@"^([NESW])\s+([CDHSN])T?\s+(\d+)$");
@@ -276,6 +311,14 @@ namespace BCDD
                     this.Fields.Add(new PBNField(String.Format("{0} {1}{2} {3}", BCalcWrapper.PLAYERS[i], BCalcWrapper.DENOMINATIONS[j], (BCalcWrapper.DENOMINATIONS[j] == 'N') ? "T" : "", ddTable[i, j])));
                 }
             }
+        }
+
+        public void SaveParContract(ParContract contract)
+        {
+            this.DeleteOptimumScore();
+            this.WriteOptimumScore(contract); // we're not writing DDS custom fields, just parse them
+            this.DeleteMinimax();
+            this.WriteMinimax(contract);
         }
 
         public void SaveDDTable(int[,] ddTable)

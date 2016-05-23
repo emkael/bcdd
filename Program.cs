@@ -37,8 +37,12 @@ namespace BCDD
                             {
                                 Console.WriteLine("Board " + boardNo);
                                 DDTable.PrintTable(ddTable);
+                                ParScore par = new ParScore(board);
+                                ParContract contract = par.GetParContract(ddTable);
+                                Console.WriteLine(contract);
                                 Console.WriteLine();
                                 board.SaveDDTable(ddTable);
+                                board.SaveParContract(contract);
                                 file.WriteBoard(board);
                             }
                             else

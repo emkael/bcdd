@@ -46,9 +46,17 @@ namespace BCDD
         {
             this.board = board;
         }
+
+        private static bool bannerDisplayed = false;
         
         public int[,] GetBCalcTable()
         {
+            if (!DDTable.bannerDisplayed)
+            {
+                Console.WriteLine("Double dummy analysis provided by BCalc.");
+                Console.WriteLine("BCalc is awesome, check it out: http://bcalc.w8.pl");
+                DDTable.bannerDisplayed = true;
+            }
             int[,] result = this.getEmptyTable();
             String deal = this.board.GetLayout();
             IntPtr solver = BCalcWrapper.bcalcDDS_new(Marshal.StringToHGlobalAnsi("PBN"), Marshal.StringToHGlobalAnsi(deal), 0, 0);

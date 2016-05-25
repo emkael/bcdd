@@ -1,4 +1,4 @@
-[Plik pomocy po angielsku | English README](README.md)
+[Plik pomocy po angielsku | English README](/doc/README.md)
 
 BCDD - BCalc Double Dummy
 =========================

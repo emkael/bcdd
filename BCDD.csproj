@@ -38,7 +38,7 @@
     <StartupObject>BCDD.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>playing-cards.ico</ApplicationIcon>
+    <ApplicationIcon>res\playing-cards.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,12 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BCalcWrapper.cs" />
-    <Compile Include="DDTable.cs" />
-    <Compile Include="ParContract.cs" />
-    <Compile Include="ParScore.cs" />
-    <Compile Include="PBNBoard.cs" />
-    <Compile Include="PBNFile.cs" />
+    <Compile Include="src\BCalcWrapper.cs" />
+    <Compile Include="src\DDTable.cs" />
+    <Compile Include="src\ParContract.cs" />
+    <Compile Include="src\ParScore.cs" />
+    <Compile Include="src\PBNBoard.cs" />
+    <Compile Include="src\PBNFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,7 +63,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="playing-cards.ico" />
+    <Content Include="res\playing-cards.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

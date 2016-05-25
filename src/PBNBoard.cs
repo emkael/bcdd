@@ -187,7 +187,16 @@ namespace BCDD
 
         public void WriteMinimax(ParContract contract)
         {
-            this.Fields.Add(new PBNField("Minimax", String.Format("{0}{1}{2}{3}{4}", contract.Level, contract.Denomination, contract.Doubled ? "D" : "", contract.Declarer, contract.Score)));
+            String minimax;
+            if (contract.Score == 0)
+            {
+                minimax = "7NS0";
+            }
+            else
+            {
+                minimax = String.Format("{0}{1}{2}{3}{4}", contract.Level, contract.Denomination, contract.Doubled ? "D" : "", contract.Declarer, contract.Score);
+            }
+            this.Fields.Add(new PBNField("Minimax", minimax));
         }
 
         public String GetOptimumScore()

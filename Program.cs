@@ -75,12 +75,21 @@ namespace BCDD
                                     Console.WriteLine("ERROR: unable to determine DD table for board " + boardNo);
                                 }
                             }
+                            catch (DllNotFoundException)
+                            {
+                                throw;
+                            }
                             catch (Exception e)
                             {
                                 Console.WriteLine(e.Message);
                             }
                         }
                         file.Save();
+                    }
+                    catch (DllNotFoundException)
+                    {
+                        Console.WriteLine("libbcalcdds.dll could not be loaded - make sure it's present in application directory!");
+                        break;
                     }
                     catch (Exception e)
                     {

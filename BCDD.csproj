@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"
+          Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')"  />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -16,7 +18,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -66,8 +68,16 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' And Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets') ">
+    <ItemGroup>
+      <BundleFiles Include="$(OutputPath)\$(SolutionName).exe" />
+      <BundleFiles Include="doc\*.md" />
+    </ItemGroup>
+    <GetAssemblyIdentity AssemblyFiles="$(OutputPath)\$(SolutionName).exe">
+      <Output TaskParameter="Assemblies" ItemName="assemblyInfo" />
+    </GetAssemblyIdentity>
+    <Zip Files="@(BundleFiles)" WorkingDirectory="bundle\tmp\" Flatten="true" 
+         ZipFileName="bundle\$(SolutionName)-$([System.Version]::Parse(%(assemblyInfo.Version)).ToString(2)).zip" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

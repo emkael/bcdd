@@ -121,8 +121,9 @@ namespace BCDD
             {
                 return nsPlaying ? nsHighest.Validate() : ewHighest.Validate();
             }
-            bool defenseVulnerability = this.determineVulnerability(vulnerability, nsPlaying ? 'E' : 'N');
             ParContract highest = nsHighest.Higher(ewHighest) ? nsHighest : ewHighest;
+            nsPlaying = ('N'.Equals(highest.Declarer) || 'S'.Equals(highest.Declarer));
+            bool defenseVulnerability = this.determineVulnerability(vulnerability, nsPlaying ? 'E' : 'N');
             ParContract highestDefense = highest.GetDefense(ddTable, defenseVulnerability);
             if (highestDefense != null)
             {

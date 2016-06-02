@@ -173,15 +173,15 @@ namespace BCDD
 
         public ParContract GetDefense(int[,] ddTable, bool vulnerable)
         {
-            if (this.Level != 0)
+            int declarerIndex = Array.IndexOf(BCalcWrapper.PLAYERS, this.Declarer);
+            int denominationIndex = Array.IndexOf(BCalcWrapper.DENOMINATIONS, this.Denomination);
+            if (this.Level != 0 && this.Level + 6 <= ddTable[declarerIndex, denominationIndex])
             {
-                int declarerIndex = Array.IndexOf(BCalcWrapper.PLAYERS, this.Declarer);
                 List<int> defendersIndexes = new List<int>();
                 defendersIndexes.Add((declarerIndex + 1) & 3);
                 defendersIndexes.Add((declarerIndex + 3) & 3);
                 List<ParContract> possibleDefense = new List<ParContract>();
                 int scoreSquared = this.Score * this.Score;
-                int denominationIndex = Array.IndexOf(BCalcWrapper.DENOMINATIONS, this.Denomination);
                 for (int i = 0; i < 5; i++)
                 {
                     int level = this.Level;

@@ -25,7 +25,7 @@ Double dummy analysis is provided by the [BCalc's](http://bcalc.w8.pl) `libbcalc
 Installation
 ============
 
- 1. Download the application.
+ 1. [Download the application](https://github.com/emkael/bcdd/releases).
  2. Unpack it to your destination directory.
  3. [Download `libbcalcdds.dll` library](http://bcalc.w8.pl/download/API_C/) suitable for your CPU architecture (application supports both win32 and win64) and put it in the application directory or somewhere in your OS' library search path.
  4. You should be good to go.

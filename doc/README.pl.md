@@ -25,7 +25,7 @@ Analiza "w widne" używa biblioteki będącej częścią projektu [BCalc](http:/
 Instalacja
 ==========
 
- 1. Pobierz program.
+ 1. [Pobierz program](https://github.com/emkael/bcdd/releases).
  2. Rozpakuj go do folderu docelowego.
  3. [Pobierz bibliotekę `libbcalcdds.dll`](http://bcalc.w8.pl/download/API_C/) odpowiednią dla używanej architektury procesora (aplikacja działa zarówno z wersją win32, jak i win64) i zapisz ją w katalogu programu lub w dowolnym innym katalogu systemowej ścieżki ładowania bibliotek.
  4. Powinno styknąć.

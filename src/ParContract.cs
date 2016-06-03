@@ -189,15 +189,18 @@ namespace BCDD
                     {
                         level++;
                     }
-                    foreach (int defender in defendersIndexes)
+                    if (level <= 7)
                     {
-                        if (level + 6 > ddTable[defender, i])
+                        foreach (int defender in defendersIndexes)
                         {
-                            ParContract defense = new ParContract(level, BCalcWrapper.DENOMINATIONS[i], BCalcWrapper.PLAYERS[defender], true, 0);
-                            defense.Score = defense.CalculateScore(ddTable[defender, i], vulnerable);
-                            if (scoreSquared > this.Score * defense.Score)
+                            if (level + 6 > ddTable[defender, i])
                             {
-                                possibleDefense.Add(defense);
+                                ParContract defense = new ParContract(level, BCalcWrapper.DENOMINATIONS[i], BCalcWrapper.PLAYERS[defender], true, 0);
+                                defense.Score = defense.CalculateScore(ddTable[defender, i], vulnerable);
+                                if (scoreSquared > this.Score * defense.Score)
+                                {
+                                    possibleDefense.Add(defense);
+                                }
                             }
                         }
                     }

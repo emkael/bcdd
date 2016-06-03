@@ -86,7 +86,7 @@ namespace BCDD
         {
             ParContract contract = new ParContract();
             int tricks = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 3; i >= 0; i--)
             {
                 if ((i % 2 == 0 && forNS)
                     || (i % 2 == 1 && forEW))
@@ -94,7 +94,8 @@ namespace BCDD
                     for (int j = 0; j < 5; j++)
                     {
                         int level = ddTable[i, j] - 6;
-                        if (level >= contract.Level)
+                        if (level > contract.Level
+                            || (level == contract.Level && j > Array.IndexOf(BCalcWrapper.DENOMINATIONS, contract.Denomination)))
                         {
                             contract.Level = level;
                             contract.Denomination = BCalcWrapper.DENOMINATIONS[j];

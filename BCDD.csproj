@@ -72,7 +72,7 @@
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' And Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets') ">
     <ItemGroup>
       <BundleFiles Include="$(OutputPath)\$(SolutionName).exe" />
-      <BundleFiles Include="doc\*.md" />
+      <BundleFiles Include="doc\README*.md" />
     </ItemGroup>
     <GetAssemblyIdentity AssemblyFiles="$(OutputPath)\$(SolutionName).exe">
       <Output TaskParameter="Assemblies" ItemName="assemblyInfo" />

@@ -12,7 +12,7 @@ This application provides an alternative to the Deep Finesse double-dummy analys
 
 Its main features, and advantages, over BigDeal's solution (MiniMaxDOS.exe's, to be precise) are:
 
- * better performance and stability
+ * [better performance and stability](/doc/img/benchmark.gif)
  * [more consistency](/doc/LowestParContract.en.md)
  * [correctness](/doc/img/420_400.png)
  * ability to batch analyze multiple files

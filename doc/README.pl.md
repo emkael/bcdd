@@ -12,7 +12,7 @@ Program pełni funkcję alternatywy dla sugerowanej przez BigDeal analizy rozda�
 
 Jego główne funkcjonalności, i przewaga nad rozwiązaniem z BigDeal (właściwie - MiniMaxDOS.exe), to:
 
- * lepsza wydajność i stabilność
+ * [lepsza wydajność i stabilność](/doc/img/benchmark.gif)
  * [większa spójność](/doc/LowestParContract.pl.md)
  * [poprawność](/doc/img/420_400.png)
  * możliwość wsadowej analizy wielu plików

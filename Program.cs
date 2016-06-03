@@ -35,6 +35,7 @@ namespace BCDD
         static void Main(string[] args)
         {
             List<String> files = Program.getFiles(args);
+            List<String> errors = new List<String>();
             if (files.Count > 0)
             {
                 foreach (String filename in files)
@@ -72,7 +73,9 @@ namespace BCDD
                                 }
                                 else
                                 {
-                                    Console.WriteLine("ERROR: unable to determine DD table for board " + boardNo);
+                                    String error = "ERROR: unable to determine DD table for board " + boardNo;
+                                    errors.Add(String.Format("[{0}] {1}", filename, error));
+                                    Console.WriteLine(error);
                                 }
                             }
                             catch (DllNotFoundException)
@@ -81,6 +84,7 @@ namespace BCDD
                             }
                             catch (Exception e)
                             {
+                                errors.Add(String.Format("[{0}:{1}] {2}", filename, boardNo, e.Message));
                                 Console.WriteLine(e.Message);
                             }
                         }
@@ -94,6 +98,12 @@ namespace BCDD
                     catch (Exception e)
                     {
                         Console.WriteLine("ERROR: " + e.Message);
+                    }
+                }
+                if (errors.Count > 0) {
+                    Console.WriteLine("Following ERRORs occured:");
+                    foreach (String error in errors) {
+                        Console.WriteLine(error);
                     }
                 }
                 Console.WriteLine("Press any key to continue...");

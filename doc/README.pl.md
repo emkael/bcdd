@@ -51,8 +51,8 @@ Rezultaty analizy "w widne" podlegają kilku umownym kwestiom. W przypadku jakic
 Konwencje przyjęte w programie:
 
  * w rozdaniach z tym samym optymalnym kontraktem dla obu stron jako minimaks przyjmuje się kontrakt dla strony rozdającej (w przeciwieństwie do koncepcji [Richarda Pavlicka](http://www.rpbridge.net/7a23.htm) przypisującej 4 pasy jako minimaks w tej sytuacji)
- * ze wszystkich równych kontraktów (tj. kontraktów wartych tyle samo i nieposiadających opłacalnej obrony, lub kontraktów będących równie opłacalnymi obronami), *najwyższy* z nich jest traktowany jako minimaks
- * w przypadku tego samego minimaksa z obu rąk tej samej strony, konkretny rozgrywający jest nieokreślony i wybrany dowolnie (i może różnić się od tego w wynikach BigDeal)
+ * ze wszystkich równych kontraktów (tj. kontraktów wartych tyle samo), *najniższy* z nich jest traktowany jako minimaks
+ * w przypadku tego samego minimaksa z obu rąk tej samej strony, konkretny rozgrywający jest nieokreślony i wybrany dowolnie (może, i zwykle będzie, różnić się od tego w wynikach BigDeal)
 
 Istniejące w wejściowym pliku PBN tagi traktowano są jako źródło tabeli liczby lew oraz minimaksa teoretycznego w następującej kolejności:
 

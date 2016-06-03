@@ -123,11 +123,13 @@ namespace BCDD
                 return nsPlaying ? nsHighest.Validate() : ewHighest.Validate();
             }
             ParContract highest = nsHighest.Higher(ewHighest) ? nsHighest : ewHighest;
+            ParContract otherSideHighest = nsHighest.Higher(ewHighest) ? ewHighest : nsHighest;
             nsPlaying = ('N'.Equals(highest.Declarer) || 'S'.Equals(highest.Declarer));
             bool defenseVulnerability = this.determineVulnerability(vulnerability, nsPlaying ? 'E' : 'N');
             ParContract highestDefense = highest.GetDefense(ddTable, defenseVulnerability);
             if (highestDefense != null)
             {
+                // Highest contract has profitable defense
                 return highestDefense.Validate();
             }
             int denominationIndex = Array.IndexOf(BCalcWrapper.DENOMINATIONS, highest.Denomination);
@@ -151,13 +153,36 @@ namespace BCDD
                     {
                         ParContract contract = new ParContract(level, BCalcWrapper.DENOMINATIONS[i], BCalcWrapper.PLAYERS[player], false, 0);
                         contract.Score = contract.CalculateScore(ddTable[player, i], vulnerable);
-                        if (scoreSquared < contract.Score * highest.Score)
+                        if (otherSideHighest.Higher(contract))
                         {
-                            possibleOptimums.Add(contract.GetDefense(ddTable, defenseVulnerability) ?? contract);
-                        }
-                        else
-                        {
+                            // Contract is lower than other side's contract
                             break;
+                        }
+                        if (highest.Score * contract.Score > 0)
+                        {
+                            // Contract makes
+                            if (Math.Abs(contract.Score) >= Math.Abs(highest.Score))
+                            {
+                                // Contract is profitable
+                                ParContract defense = contract.GetDefense(ddTable, defenseVulnerability);
+                                if (defense != null && (contract.Score * contract.Score > contract.Score * defense.Score))
+                                {
+                                    // Contract has defense
+                                    possibleOptimums.Add(defense);
+                                    // So lower contracts will too.
+                                    break;
+                                }
+                                else
+                                {
+                                    // Contract does not have defense
+                                    possibleOptimums.Add(contract);
+                                }
+                            }
+                            else
+                            {
+                                // Contract is not profitable
+                                break;
+                            }
                         }
                         level--;
                     }
@@ -165,9 +190,21 @@ namespace BCDD
             }
             foreach (ParContract contract in possibleOptimums)
             {
-                if (Math.Abs(contract.Score) > Math.Abs(highest.Score) || (contract.Score == highest.Score && contract.Higher(highest)))
+                if ((Math.Abs(contract.Score) > Math.Abs(highest.Score)))
                 {
+                    // Contract is more profitable
                     highest = contract;
+                }
+                else
+                {
+                    if (contract.Score == highest.Score)
+                    {
+                        if (highest.Higher(contract))
+                        {
+                            // Equally profitable, but lower
+                            highest = contract;
+                        }
+                    }
                 }
             }
             return highest.Validate();

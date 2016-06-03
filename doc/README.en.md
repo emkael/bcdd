@@ -51,8 +51,8 @@ There are some quirks to double dummy analysis results, which are purely convent
 This includes:
 
  * boards with the same par contract for both sides: par contract for the dealing side is assumed (contrary to [Richard Pavlicek's](http://www.rpbridge.net/7a23.htm) convention of assigning "Pass out" par contract in such cases)
- * from all equal par contracts (i.e. yielding the same score and not allowing a profitable sacrifice, or equally profitable sacrifices), the *highest* one is assigned as the par contract
- * when par contract is the same for both partners of a specific side, the declarer is unspecified (and may differ from BigDeal's)
+ * from all equal par contracts (i.e. yielding the same score), the *lowest* one is assumed the par contract
+ * when par contract is the same for both partners of a specific side, the declarer is unspecified (may, and usually will, differ from BigDeal's)
 
 The priority of existing PBN tags treated as input sources for double dummy trick table and par contract/score is:
 

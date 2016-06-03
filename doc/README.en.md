@@ -17,7 +17,7 @@ Its main features, and advantages, over BigDeal's solution (MiniMaxDOS.exe's, to
  * ability to batch analyze multiple files
  * export support for both JFR custom DD analysis PBN tags and [standard PBN set of tags](http://www.tistis.nl/pbn/pbn_v21.txt)
  * additional import support for Double Dummy Solver custom `OptimumResult` PBN tag
- * automatic conversion between these formats
+ * automatic conversion between these formats (note that this results in a larger PBN output file)
 
 Double dummy analysis is provided by the [BCalc's](http://bcalc.w8.pl) `libbcalcdds` library (which is a prerequisite not distributed with the software).
 

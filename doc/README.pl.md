@@ -17,7 +17,7 @@ Jego główne funkcjonalności, i przewaga nad rozwiązaniem z BigDeal (właści
  * możliwość wsadowej analizy wielu plików
  * obsługa niestandardowych JFR-owych tagów PBN dla wyników analizy oraz [standardowych tagów PBN](http://www.tistis.nl/pbn/pbn_v21.txt)
  * dodatkowa obsługa importu danych z niestandardowego tagu PBN programu Double Dummy Solver (`OptimumResult`)
- * automatyczna konwersja danych w powyższych formatach
+ * automatyczna konwersja danych w powyższych formatach (uwaga: efektem jest większy rozmiar pliku PBN )
 
 Analiza "w widne" używa biblioteki będącej częścią projektu [BCalc](http://bcalc.w8.pl) - `libbcalcdds` (biblioteka ta jest wymagana do uruchomienia programu).
 

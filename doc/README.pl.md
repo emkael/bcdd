@@ -10,9 +10,10 @@ Opis ogólny
 
 Program pełni funkcję alternatywy dla sugerowanej przez BigDeal analizy rozdań przy użyciu Deep Finesse dla rozdań, w których BigDeal stwierdził brak wyników takiej analizy w drukowanym pliku PBN.
 
-Jego główne funkcjonalności, i przewaga nad rozwiązaniem z BigDeal, to:
+Jego główne funkcjonalności, i przewaga nad rozwiązaniem z BigDeal (właściwie - MiniMaxDOS.exe), to:
 
  * lepsza wydajność i stabilność
+ * większa spójność
  * możliwość wsadowej analizy wielu plików
  * obsługa niestandardowych JFR-owych tagów PBN dla wyników analizy oraz [standardowych tagów PBN](http://www.tistis.nl/pbn/pbn_v21.txt)
  * dodatkowa obsługa importu danych z niestandardowego tagu PBN programu Double Dummy Solver (`OptimumResult`)
@@ -51,9 +52,11 @@ Rezultaty analizy "w widne" podlegają kilku umownym kwestiom. W przypadku jakic
 Konwencje przyjęte w programie:
 
  * w rozdaniach z tym samym optymalnym kontraktem dla obu stron jako minimaks przyjmuje się kontrakt dla strony rozdającej (w przeciwieństwie do koncepcji [Richarda Pavlicka](http://www.rpbridge.net/7a23.htm) przypisującej 4 pasy jako minimaks w tej sytuacji)
- * ze wszystkich równych kontraktów (tj. kontraktów wartych tyle samo), *najniższy* z nich jest traktowany jako minimaks
+ * ze wszystkich równych kontraktów (tj. kontraktów wartych tyle samo), *najniższy* z nich jest traktowany jako minimaks (ale: patrz niżej)
  * w przypadku tego samego minimaksa z obu rąk tej samej strony, konkretny rozgrywający jest nieokreślony i wybrany dowolnie (może, i zwykle będzie, różnić się od tego w wynikach BigDeal)
 
+W szczególnych przypadkach, gdy wysokość kontraktu minimaksa dla obu graczy tej samej strony jest różna, BigDeal odbiega od zasady traktowania najniższego kontraktu jako minimaksa. Ta niespójność nie została zachowana w BCDD.
+ 
 Istniejące w wejściowym pliku PBN tagi traktowano są jako źródło tabeli liczby lew oraz minimaksa teoretycznego w następującej kolejności:
 
  * niestandardowe tagi JFR: `Ability` i `Minimax`

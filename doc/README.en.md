@@ -14,6 +14,7 @@ Its main features, and advantages, over BigDeal's solution (MiniMaxDOS.exe's, to
 
  * better performance and stability
  * [more consistency](/doc/LowestParContract.en.md)
+ * [correctness](/doc/img/420_400.png)
  * ability to batch analyze multiple files
  * export support for both JFR custom DD analysis PBN tags and [standard PBN set of tags](http://www.tistis.nl/pbn/pbn_v21.txt)
  * additional import support for Double Dummy Solver custom `OptimumResult` PBN tag

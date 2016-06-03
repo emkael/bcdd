@@ -1,6 +1,8 @@
 Issues with lowest par contract from equally profitable in MiniMaxDOS
 =====================================================================
 
+*Note: all issues below concern the MiniMaxDOS component of BigDeal, which writes JFR-encoded double-dummy data to PBN files. BigDeal's par contract/score implementation used for printing/preview from within BigDeal is a separate subsystem, irrelevant to the following.*
+
 MiniMaxDOS usually assumes that, from all equally profitable contracts, the lowest one is selected as par contract.
 
 That is not the case, though, if the number of tricks to be taken from both hands of the same side for the determined par contract, differs. Below are some of the examples taken from a test set.

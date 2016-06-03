@@ -14,6 +14,7 @@ Jego główne funkcjonalności, i przewaga nad rozwiązaniem z BigDeal (właści
 
  * lepsza wydajność i stabilność
  * [większa spójność](/doc/LowestParContract.pl.md)
+ * [poprawność](/doc/img/420_400.png)
  * możliwość wsadowej analizy wielu plików
  * obsługa niestandardowych JFR-owych tagów PBN dla wyników analizy oraz [standardowych tagów PBN](http://www.tistis.nl/pbn/pbn_v21.txt)
  * dodatkowa obsługa importu danych z niestandardowego tagu PBN programu Double Dummy Solver (`OptimumResult`)

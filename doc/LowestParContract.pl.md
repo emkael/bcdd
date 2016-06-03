@@ -1,6 +1,8 @@
 Problemy z najniższym spośród równych kontraktów minimaksowych w  MiniMaxDOS
 ============================================================================
 
+*Uwaga: poniższe problemy dotyczą komponentu BigDeal o nazwie MiniMaxDOS, piszącego bezpośrednio do PBN dane analizy w widne w formatach JFR. Implementacja minimaksa w samym BigDeal, używana do wyświetlania/drukowania danych analizy z tabelami rozkładów, jest niezależna od poniższych.*
+
 MiniMaxDOS zazwyczaj przyjmuje, że ze wszystkich równie opłacalnych kontraktów, minimaksem jest najniższy.
 
 Zasada ta przestaje jednak działać, jeśli liczba lew do wzięcia różni się między rozgrywką z obu rąk tej samej strony. Poniżej znajdują się przykłady z zestawu testowego.

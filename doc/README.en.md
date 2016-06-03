@@ -13,7 +13,7 @@ This application provides an alternative to the Deep Finesse double-dummy analys
 Its main features, and advantages, over BigDeal's solution (MiniMaxDOS.exe's, to be precise) are:
 
  * better performance and stability
- * more consistency
+ * [more consistency](/doc/LowestParContract.en.md)
  * ability to batch analyze multiple files
  * export support for both JFR custom DD analysis PBN tags and [standard PBN set of tags](http://www.tistis.nl/pbn/pbn_v21.txt)
  * additional import support for Double Dummy Solver custom `OptimumResult` PBN tag
@@ -55,7 +55,7 @@ This includes:
  * from all equal par contracts (i.e. yielding the same score), the *lowest* one is assumed the par contract (but: see below)
  * when par contract is the same for both partners of a specific side, the declarer is unspecified (may, and usually will, differ from BigDeal's)
 
-In some cases, when par contract differs between two players of one side, BigDeal deviates from the lowest equal par contract. This inconsistency is not maintained in BCDD.
+[In some cases](/doc/LowestParContract.en.md), when par contract differs between two players of one side, BigDeal deviates from the lowest equal par contract. This inconsistency is not maintained in BCDD.
 
 The priority of existing PBN tags treated as input sources for double dummy trick table and par contract/score is:
 

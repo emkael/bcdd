@@ -212,7 +212,8 @@ namespace BCDD
                     possibleDefense = possibleDefense.FindAll(x => x.Score == optimumDefense.Score);
                     foreach (ParContract defense in possibleDefense)
                     {
-                        if (defense.Higher(optimumDefense))
+                        // Lowest from the most profitable sacrifices
+                        if (optimumDefense.Higher(defense))
                         {
                             optimumDefense = defense;
                         }

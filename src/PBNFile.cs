@@ -40,6 +40,10 @@ namespace BCDD
             {
                 this.Boards.Add(new PBNBoard(lines));
             }
+            if (!this.Boards[0].HasField("Event"))
+            {
+                this.Boards[0].WriteEvent("");
+            }
         }
 
         public void WriteBoard(PBNBoard board)

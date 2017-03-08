@@ -100,6 +100,23 @@ namespace BCDD
             }
         }
 
+        public String GetEvent()
+        {
+            return this.GetField("Event");
+        }
+
+        public void WriteEvent(String name)
+        {
+            for (int i = 0; i < this.Fields.Count; i++)
+            {
+                if ("Board".Equals(this.Fields[i].Key))
+                {
+                    this.Fields.Insert(i, new PBNField("Event", name));
+                    break;
+                }
+            }
+        }
+
         public String GetLayout()
         {
             return this.GetField("Deal");

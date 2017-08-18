@@ -203,7 +203,7 @@ Przykład 3
 
 E ugrywa 3NT. N ma opłacalną obronę w 4 trefl (ale nie 4 karo), a S ma opłacalną obronę w 4 karo (ale nie 4 trefl), obie bez trzech.
 
-`MiniMaxDOS` ustala `4Dx S, -500` jako minimaks, zamiast `4Cx S, -500`.
+`MiniMaxDOS` ustala `4Dx S, -500` jako minimaks, zamiast `4Cx N, -500`.
 
 Przykład 4
 ----------

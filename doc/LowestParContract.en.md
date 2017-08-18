@@ -203,7 +203,7 @@ Example 3
 
 East makes 3NT. North can sacrifice in 4 Clubs (but not in 4 Diamonds) and South can sacrifice in 4 Diamonds (but not in 4 Clubs), both three down.
 
-`MiniMaxDOS` reports `4Dx South, -500` as par contract, instead of `4Cx South, -500`.
+`MiniMaxDOS` reports `4Dx South, -500` as par contract, instead of `4Cx North, -500`.
 
 Example 4
 ---------

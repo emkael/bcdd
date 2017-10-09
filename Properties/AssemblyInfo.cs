@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BCDD")]
-[assembly: AssemblyDescription("BCalc-based double-dumym analysis for PBN files")]
+[assembly: AssemblyDescription("BCalc-based double-dummy analysis for PBN files")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("emkael.info")]
 [assembly: AssemblyProduct("BCDD")]

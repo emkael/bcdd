@@ -73,9 +73,9 @@ namespace BCDD
                                 }
                                 else
                                 {
-                                    String error = "ERROR: unable to determine DD table for board " + boardNo;
+                                    String error = "unable to determine DD table for board " + boardNo;
                                     errors.Add(String.Format("[{0}] {1}", filename, error));
-                                    Console.WriteLine(error);
+                                    Console.WriteLine("ERROR: " + error);
                                 }
                             }
                             catch (DllNotFoundException)
@@ -85,18 +85,20 @@ namespace BCDD
                             catch (Exception e)
                             {
                                 errors.Add(String.Format("[{0}:{1}] {2}", filename, boardNo, e.Message));
-                                Console.WriteLine(e.Message);
+                                Console.WriteLine("ERROR: " + e.Message);
                             }
                         }
                         file.Save();
                     }
-                    catch (DllNotFoundException)
+                    catch (DllNotFoundException e)
                     {
-                        Console.WriteLine("libbcalcdds.dll could not be loaded - make sure it's present in application directory!");
+                        errors.Add("libbcalcdds.dll could not be loaded - make sure it's present in application directory!");
+                        Console.WriteLine("ERROR: " + e.Message);
                         break;
                     }
                     catch (Exception e)
                     {
+                        errors.Add(e.Message);
                         Console.WriteLine("ERROR: " + e.Message);
                     }
                 }
@@ -105,9 +107,9 @@ namespace BCDD
                     foreach (String error in errors) {
                         Console.WriteLine(error);
                     }
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
                 }
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
             }
         }
     }

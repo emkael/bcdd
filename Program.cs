@@ -69,7 +69,6 @@ namespace BCDD
                                     Console.WriteLine();
                                     board.SaveDDTable(ddTable);
                                     board.SaveParContract(contract);
-                                    file.WriteBoard(board);
                                 }
                                 else
                                 {
@@ -87,6 +86,7 @@ namespace BCDD
                                 errors.Add(String.Format("[{0}:{1}] {2}", filename, boardNo, e.Message));
                                 Console.WriteLine("ERROR: " + e.Message);
                             }
+                            file.WriteBoard(board);
                         }
                         file.Save();
                     }

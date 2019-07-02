@@ -72,16 +72,21 @@ namespace BCDD
             return false;
         }
 
-        public String GetField(String key)
+        public PBNField GetFieldObject(String key)
         {
             foreach (PBNField field in this.Fields)
             {
                 if (key.Equals(field.Key))
                 {
-                    return field.Value;
+                    return field;
                 }
             }
             throw new FieldNotFoundException(key + " field not found");
+        }
+
+        public String GetField(String key)
+        {
+            return this.GetFieldObject(key).Value;
         }
 
         public void DeleteField(String key)

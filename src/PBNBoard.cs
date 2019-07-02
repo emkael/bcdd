@@ -58,6 +58,60 @@ namespace BCDD
                 }
                 this.Fields.Add(field);
             }
+            if (!this.HasField("Deal")) {
+                throw new FieldNotFoundException("'Deal' field not found");
+            }
+            if (!this.HasField("Dealer"))
+            {
+                string dealer = this.DetermineDealer();
+                if (dealer != null)
+                {
+                    this.Fields.Insert(this.Fields.IndexOf(this.GetFieldObject("Deal")), new PBNField("Dealer", dealer));
+                }
+            }
+            if (!this.HasField("Vulnerable"))
+            {
+                string vulnerability = this.DetermineVulnerability();
+                if (vulnerability != null)
+                {
+                    this.Fields.Insert(this.Fields.IndexOf(this.GetFieldObject("Deal")), new PBNField("Vulnerable", vulnerability));
+                }
+            }
+        }
+
+        private string DetermineVulnerability()
+        {
+            int boardNo;
+            if (Int32.TryParse(this.GetNumber(), out boardNo))
+            {
+                boardNo = boardNo % 16;
+                int mod10 = boardNo % 10;
+                int mod3 = boardNo % 3;
+                if (mod10 == 2 || mod10 == 5) // boards 2, 5, 12, 15
+                {
+                    return "NS";
+                }
+                if (mod3 == 0) // boards 3, 6, 9 and 0 (16) - 12 and 15 are already ruled out
+                {
+                    return "EW";
+                }
+                if (mod3 == 1 && boardNo > 1) // boards 4, 7, 10, 13
+                {
+                    return "All";
+                }
+                return "None";
+            }
+            return null;
+        }
+
+        private string DetermineDealer()
+        {
+            int boardNo;
+            if (Int32.TryParse(this.GetNumber(), out boardNo))
+            {
+                return BCalcWrapper.PLAYERS[(boardNo - 1) % 4].ToString();
+            }
+            return null;
         }
 
         public bool HasField(String key)

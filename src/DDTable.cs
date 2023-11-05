@@ -152,5 +152,28 @@ namespace BCDD
                 Console.WriteLine();
             }
         }
+
+        public static string ShortFormat(int[,] ddTable)
+        {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0; i < 4; i++)
+            {
+                s.Append(BCalcWrapper.PLAYERS[i]);
+                s.Append(" ");
+                for (int j = 0; j < 5; j++)
+                {
+                    s.Append(ddTable[i, j]);
+                    if (j < 4)
+                    {
+                        s.Append("-");
+                    }
+                }
+                if (i < 3)
+                {
+                    s.Append(" ");
+                }
+            }
+            return s.ToString();
+        }
     }
 }

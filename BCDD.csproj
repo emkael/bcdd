@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"
-          Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')"  />
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -53,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\BCalcWrapper.cs" />
+    <Compile Include="src\BCDDFile.cs" />
     <Compile Include="src\DDTable.cs" />
     <Compile Include="src\ParContract.cs" />
     <Compile Include="src\ParScore.cs" />
@@ -77,7 +77,6 @@
     <GetAssemblyIdentity AssemblyFiles="$(OutputPath)\$(SolutionName).exe">
       <Output TaskParameter="Assemblies" ItemName="assemblyInfo" />
     </GetAssemblyIdentity>
-    <Zip Files="@(BundleFiles)" WorkingDirectory="bundle\tmp\" Flatten="true" 
-         ZipFileName="bundle\$(SolutionName)-$([System.Version]::Parse(%(assemblyInfo.Version)).ToString(2)).zip" />
+    <Zip Files="@(BundleFiles)" WorkingDirectory="bundle\tmp\" Flatten="true" ZipFileName="bundle\$(SolutionName)-$([System.Version]::Parse(%(assemblyInfo.Version)).ToString(2)).zip" />
   </Target>
 </Project>

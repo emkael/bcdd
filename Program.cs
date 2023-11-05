@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 
@@ -35,72 +35,22 @@ namespace BCDD
         static void Main(string[] args)
         {
             List<String> files = Program.getFiles(args);
+            List<BCDDFile> workers = new List<BCDDFile>();
             List<String> errors = new List<String>();
+            BCDDFile.filesCounter = files.Count;
             if (files.Count > 0)
             {
                 foreach (String filename in files)
                 {
-                    try
-                    {
-                        Console.WriteLine("Analyzing " + filename);
-                        PBNFile file = new PBNFile(filename);
-                        foreach (PBNBoard board in file.Boards)
-                        {
-                            DDTable table = new DDTable(board);
-                            String boardNo;
-                            try
-                            {
-                                boardNo = board.GetNumber();
-                            }
-                            catch (FieldNotFoundException)
-                            {
-                                boardNo = "?";
-                            }
-                            try
-                            {
-                                int[,] ddTable = table.GetDDTable();
-                                if (ddTable != null)
-                                {
-                                    Console.WriteLine("Board " + boardNo);
-                                    DDTable.PrintTable(ddTable);
-                                    ParScore par = new ParScore(board);
-                                    ParContract contract = par.GetParContract(ddTable);
-                                    Console.WriteLine(contract);
-                                    Console.WriteLine();
-                                    board.SaveDDTable(ddTable);
-                                    board.SaveParContract(contract);
-                                }
-                                else
-                                {
-                                    String error = "unable to determine DD table for board " + boardNo;
-                                    errors.Add(String.Format("[{0}] {1}", filename, error));
-                                    Console.WriteLine("ERROR: " + error);
-                                }
-                            }
-                            catch (DllNotFoundException)
-                            {
-                                throw;
-                            }
-                            catch (Exception e)
-                            {
-                                errors.Add(String.Format("[{0}:{1}] {2}", filename, boardNo, e.Message));
-                                Console.WriteLine("ERROR: " + e.Message);
-                            }
-                            file.WriteBoard(board);
-                        }
-                        file.Save();
-                    }
-                    catch (DllNotFoundException e)
-                    {
-                        errors.Add("libbcalcdds.dll could not be loaded - make sure it's present in application directory!");
-                        Console.WriteLine("ERROR: " + e.Message);
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        errors.Add(e.Message);
-                        Console.WriteLine("ERROR: " + e.Message);
-                    }
+                    BCDDFile worker = new BCDDFile(filename);
+                    workers.Add(worker);
+                    Console.WriteLine("Analyzing " + filename);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(worker.analyze));
+                }
+                BCDDFile.filesCountdown.WaitOne();
+                foreach (BCDDFile w in workers)
+                {
+                    errors.AddRange(w.errors);
                 }
                 if (errors.Count > 0) {
                     Console.WriteLine("Following ERRORs occured:");

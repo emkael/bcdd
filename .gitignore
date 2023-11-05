@@ -1,1 +1,4 @@
 *.suo
+*.zip
+*.pbn
+/.vs

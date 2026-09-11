@@ -57,6 +57,13 @@ namespace BCDD
             }
             try
             {
+                List<String> validationErrors = board.ValidateLayout();
+                if (validationErrors.Count > 0)
+                {
+                    throw new InvalidLayoutException(
+                        String.Join("; ", validationErrors.ToArray())
+                    );
+                }
                 int[,] ddTable = table.GetDDTable();
                 if (ddTable != null)
                 {

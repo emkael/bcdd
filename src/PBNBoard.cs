@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -444,6 +445,55 @@ namespace BCDD
                 this.DeleteAbility();
                 this.WriteAbility(ddTable);
             }
+        }
+
+        public List<String> ValidateLayout()
+        {
+            string[] cards = { "A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2" };
+
+            Dictionary<String, List<String>> deck = new Dictionary<String, List<String>>();
+            for (int suitIndex = 3; suitIndex >= 0; suitIndex--)
+            {
+                foreach (string card in cards)
+                {
+                    deck[BCalcWrapper.DENOMINATIONS[suitIndex].ToString() + card] = new List<String>();
+                }
+            }
+
+            List<String> errors = new List<string>();
+
+            BoardLayout layout = new BoardLayout(this.GetLayout());
+            foreach (KeyValuePair<String, Dictionary<String, List<String>>> hand in layout.Hands)
+            {
+                foreach (KeyValuePair<String, List<String>> suit in hand.Value)
+                {
+                    foreach (String card in suit.Value)
+                    {
+                        if (cards.Contains(card.ToUpper()))
+                        {
+                            deck[suit.Key + card.ToUpper()].Add(hand.Key);
+                        }
+                        else
+                        {
+                            errors.Add(String.Format("Invalid card in {0}: {1}{2}", hand.Key, suit.Key, card));
+                        }
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<String, List<String>> card in deck)
+            {
+                if (card.Value.Count == 0)
+                {
+                    errors.Add(String.Format("Missing card: {0}", card.Key));
+                }
+                if (card.Value.Count > 1)
+                {
+                    errors.Add(String.Format("Duplicate card in {0}: {1}", String.Join(", ", card.Value.ToArray()), card.Key));
+                }
+            }
+
+            return errors;
         }
     }
 }

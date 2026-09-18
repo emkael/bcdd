@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace BCDD
@@ -7,6 +8,8 @@ namespace BCDD
     public class BCDDFile
     {
         public List<String> errors;
+        private bool errorsEncountered;
+        private static Mutex _errorsPrintLock = new Mutex();
         private String filename;
         private PBNFile file;
         private String shortname;
@@ -20,6 +23,7 @@ namespace BCDD
         public BCDDFile(String filename)
         {
             this.errors = new List<String>();
+            this.errorsEncountered = false;
             this.filename = filename;
             this.file = new PBNFile(filename);
             this.shortname = Path.GetFileName(this.filename);
@@ -74,9 +78,17 @@ namespace BCDD
                 List<String> validationErrors = board.ValidateLayout();
                 if (validationErrors.Count > 0)
                 {
-                    throw new InvalidLayoutException(
-                        String.Join("; ", validationErrors.ToArray())
-                    );
+                    BCDDFile._errorsPrintLock.WaitOne();
+                    if (!this.errorsEncountered)
+                    {
+                        this.error("Deal layout errors encountered");
+                    }
+                    foreach (String validationError in validationErrors)
+                    {
+                        this.error(validationError, boardNo);
+                    }
+                    this.errorsEncountered = true;
+                    BCDDFile._errorsPrintLock.ReleaseMutex();
                 }
                 int[,] ddTable = table.GetDDTable();
                 if (ddTable != null)

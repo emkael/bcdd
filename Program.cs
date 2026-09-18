@@ -53,6 +53,7 @@ namespace BCDD
                     errors.AddRange(w.errors);
                 }
                 if (errors.Count > 0) {
+                    Console.WriteLine();
                     Console.WriteLine("Following ERRORs occured:");
                     foreach (String error in errors) {
                         Console.WriteLine(error);

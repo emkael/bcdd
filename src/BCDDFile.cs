@@ -9,6 +9,7 @@ namespace BCDD
         public List<String> errors;
         private String filename;
         private PBNFile file;
+        private String shortname;
 
         public static int filesCounter;
         public static ManualResetEvent filesCountdown = new ManualResetEvent(false);
@@ -21,17 +22,30 @@ namespace BCDD
             this.errors = new List<String>();
             this.filename = filename;
             this.file = new PBNFile(filename);
+            this.shortname = Path.GetFileName(this.filename);
+            if (this.file.ParseErrors.Count > 0)
+            {
+                this.error("PBN format errors encountered");
+                foreach (KeyValuePair<int, String> kv in this.file.ParseErrors)
+                {
+                    this.error(kv.Value, "", kv.Key);
+                }
+            }
         }
 
-        private void error(String message, String boardNo = "")
+        private void error(String message, String boardNo = "", int lineNo = -1)
         {
             if (!"".Equals(boardNo))
             {
-                message = String.Format("[{0}:{1}] {2}", this.filename, boardNo, message);
+                message = String.Format("[{0}:B#{1}] {2}", this.shortname, boardNo, message);
+            }
+            else if (lineNo > -1)
+            {
+                message = String.Format("[{0}:L#{1}] {2}", this.shortname, lineNo, message);
             }
             else
             {
-                message = String.Format("[{0}] {1}", this.filename, message);
+                message = String.Format("[{0}] {1}", this.shortname, message);
             }
             errors.Add(message);
             Console.WriteLine("ERROR: " + message);
@@ -39,7 +53,7 @@ namespace BCDD
 
         private void info(String boardNo, String ddTable, ParContract contract)
         {
-            Console.WriteLine(String.Format("[{0}:{1}] {2} {3}", this.filename, boardNo, ddTable, contract));
+            Console.WriteLine(String.Format("[{0}:{1}] {2} {3}", this.shortname, boardNo, ddTable, contract));
         }
 
         private void processBoard(object state)

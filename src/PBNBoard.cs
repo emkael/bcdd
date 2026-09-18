@@ -60,7 +60,7 @@ namespace BCDD
                 this.Fields.Add(field);
             }
             if (!this.HasField("Deal")) {
-                throw new FieldNotFoundException("'Deal' field not found");
+                throw new FieldNotFoundException("PBN section doesn't contain 'Deal' field");
             }
             if (!this.HasField("Dealer"))
             {

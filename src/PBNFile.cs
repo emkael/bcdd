@@ -9,6 +9,7 @@ namespace BCDD
     class PBNFile
     {
         public List<PBNBoard> Boards;
+        public Dictionary<int, String> ParseErrors;
 
         private String filename;
         private String tmpFileName;
@@ -18,27 +19,39 @@ namespace BCDD
         public PBNFile(String filename)
         {
             this.filename = filename;
+            this.ParseErrors = new Dictionary<int, string>();
             this.Boards = new List<PBNBoard>();
-            String[] contents = File.ReadAllLines(this.filename).Select(l => l.Trim()).ToArray();
-            List<String> lines = new List<String>();
-            foreach (String line in contents)
+            List<String> contents = File.ReadAllLines(this.filename).Select(l => l.Trim()).ToList();
+            if (!contents.Last().Equals(""))
             {
-                if (line.Length == 0)
+                contents.Add("");
+            }
+            List<String> lines = new List<String>();
+            int lineNo = 0;
+            for (int l = 0; l < contents.Count; l++)
+            {
+                String line = contents[l];
+                if (line.Length != 0)
                 {
-                    if (lines.Count > 0)
-                    {
-                        this.Boards.Add(new PBNBoard(lines));
-                        lines = new List<String>();
-                    }
+                    lines.Add(line);
+                    continue;
                 }
                 else
                 {
-                    lines.Add(line);
+                    if (lines.Count > 0) // ignore leading or multiple empty lines
+                    {
+                        try
+                        {
+                            this.Boards.Add(new PBNBoard(lines));
+                        }
+                        catch (Exception ex)
+                        {
+                            this.ParseErrors[lineNo+1] = ex.Message;
+                        }
+                        lines = new List<String>();
+                        lineNo = l;
+                    }
                 }
-            }
-            if (lines.Count > 0)
-            {
-                this.Boards.Add(new PBNBoard(lines));
             }
             if (!this.Boards[0].HasField("Event"))
             {

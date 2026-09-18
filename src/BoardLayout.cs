@@ -59,7 +59,6 @@ namespace BCDD
                 {
                     throw new InvalidLayoutException(String.Format("Hand does not contain four suits: {0}", playerHands[playerIndex]));
                 }
-                int playerCardCount = 0;
                 for (int suitIndex = 0; suitIndex < cards.Length; suitIndex++)
                 {
                     List<String> currentHand = new List<String>();
@@ -68,14 +67,9 @@ namespace BCDD
                         if (card.Length > 0)
                         {
                             currentHand.Add(card);
-                            playerCardCount++;
                         }
                     }
                     hand[(BCalcWrapper.DENOMINATIONS[3 - suitIndex]).ToString()] = currentHand;
-                }
-                if (playerCardCount != 13)
-                {
-                    throw new InvalidLayoutException(String.Format("Hand does not contain 13 cards: {0}", playerHands[playerIndex]));
                 }
                 this.Hands[(handLetters[playerIndex]).ToString()] = hand;
             }

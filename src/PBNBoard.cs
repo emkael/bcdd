@@ -463,10 +463,13 @@ namespace BCDD
             List<String> errors = new List<string>();
 
             BoardLayout layout = new BoardLayout(this.GetLayout());
+
             foreach (KeyValuePair<String, Dictionary<String, List<String>>> hand in layout.Hands)
             {
+                int handCount = 0;
                 foreach (KeyValuePair<String, List<String>> suit in hand.Value)
                 {
+                    handCount += suit.Value.Count;
                     foreach (String card in suit.Value)
                     {
                         if (cards.Contains(card.ToUpper()))
@@ -478,6 +481,13 @@ namespace BCDD
                             errors.Add(String.Format("Invalid card in {0}: {1}{2}", hand.Key, suit.Key, card));
                         }
                     }
+                }
+                if (handCount != 13)
+                {
+                    errors.Add(String.Format("Hand in {0} does not contain 13 cards: {1}",
+                        hand.Key,
+                        String.Join(".", hand.Value.Select(suit => String.Join("", suit.Value.ToArray())).ToArray())
+                    ));
                 }
             }
 
